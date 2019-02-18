@@ -144,10 +144,7 @@ namespace FlatBuffers
 
         ~ByteArrayAllocator()
         {
-            if (_handle.IsAllocated)
-            {
-                _handle.Free();
-            }
+            Dispose(false);
         }
 #endif
 
