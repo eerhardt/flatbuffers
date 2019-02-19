@@ -26,7 +26,7 @@ namespace FlatBuffers.Benchmarks
         private const int NumberOfRows = 10_000;
 
         [Benchmark]
-        public void BuildMonsters()
+        public void BuildNestedMonster()
         {
             const string nestedMonsterName = "NestedMonsterName";
             const short nestedMonsterHp = 600;
@@ -44,6 +44,7 @@ namespace FlatBuffers.Benchmarks
                 var monster1 = Monster.EndMonster(fbb1);
                 Monster.FinishMonsterBuffer(fbb1, monster1);
                 var fbb1Bytes = fbb1.SizedByteArray();
+                fbb1.DataBuffer.Dispose();
                 fbb1 = null;
 
                 // Create a Monster which has the first buffer as a nested buffer
@@ -57,6 +58,7 @@ namespace FlatBuffers.Benchmarks
                 Monster.AddTestnestedflatbuffer(fbb2, nestedBuffer);
                 var monster = Monster.EndMonster(fbb2);
                 Monster.FinishMonsterBuffer(fbb2, monster);
+                fbb2.DataBuffer.Dispose();
             }
         }
 
@@ -66,7 +68,7 @@ namespace FlatBuffers.Benchmarks
             for (int i = 0; i < NumberOfRows; i++)
             {
                 var builder = new FlatBufferBuilder(16);
-                var str1 = builder.CreateString("NestedMonsterName");
+                var str1 = builder.CreateString("MonsterName");
                 Monster.StartMonster(builder);
                 Monster.AddName(builder, str1);
                 Monster.AddHp(builder, 600);
@@ -80,6 +82,22 @@ namespace FlatBuffers.Benchmarks
                 var monster1 = Monster.EndMonster(builder);
                 Monster.FinishMonsterBuffer(builder, monster1);
                 builder.DataBuffer.Dispose();
+            }
+        }
+
+        [Benchmark]
+        public void TestTables()
+        {
+            FlatBufferBuilder builder = new FlatBufferBuilder(1024 * 1024 * 32);
+            for (int x = 0; x < 500000; ++x)
+            {
+                var offset = builder.CreateString("T");
+                builder.StartObject(4);
+                builder.AddDouble(3.2);
+                builder.AddDouble(4.2);
+                builder.AddDouble(5.2);
+                builder.AddOffset(offset.Value);
+                builder.EndObject();
             }
         }
     }

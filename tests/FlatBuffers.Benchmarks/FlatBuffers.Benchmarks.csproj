@@ -5,7 +5,8 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <!--<DefineConstants>$(DefineConstants);UNSAFE_BYTEBUFFER;ENABLE_SPAN_T;ENABLE_MEMORY_T</DefineConstants>-->
+    <DefineConstants>$(DefineConstants);UNSAFE_BYTEBUFFER;ENABLE_SPAN_T;BYTEBUFFER_NO_BOUNDS_CHECK;ENABLE_MEMORY_T</DefineConstants>
+    <!--<DefineConstants>$(DefineConstants);UNSAFE_BYTEBUFFER;ENABLE_SPAN_T;BYTEBUFFER_NO_BOUNDS_CHECK</DefineConstants>-->
   </PropertyGroup>
 
   <ItemGroup>
